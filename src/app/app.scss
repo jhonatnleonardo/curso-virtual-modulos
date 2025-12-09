@@ -1,0 +1,32 @@
+.app-main {
+  min-height: calc(100vh - 200px);
+  background-color: #f8f9fa;
+  padding: 20px 0;
+
+  .container-fluid {
+    padding: 0 15px;
+  }
+}
+
+// Animación para cambios de ruta
+router-outlet + * {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    padding: 10px 0;
+    min-height: calc(100vh - 180px);
+  }
+}

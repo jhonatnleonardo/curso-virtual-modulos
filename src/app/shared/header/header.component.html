@@ -1,0 +1,118 @@
+<header class="app-header">
+  <!-- Barra de navegación superior -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand" routerLink="/">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="logo-text">
+            <h1>CursoVirtual</h1>
+            <p class="logo-subtitle">Sistema de Módulos</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Botón hamburguesa para móvil -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarContent" aria-controls="navbarContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Contenido colapsable -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <!-- Navegación principal -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" *ngFor="let item of menuItems">
+            <a *ngIf="shouldShowMenuItem(item)"
+               class="nav-link"
+               [routerLink]="item.path"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: item.path === '/'}">
+              <i [class]="item.icon"></i>
+              <span class="nav-label">{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Sección de usuario -->
+        <div class="user-section">
+          <div *ngIf="isAuthenticated; else noAuth">
+            <div class="dropdown">
+              <button class="btn btn-user dropdown-toggle" type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="user-avatar">
+                  {{ getUsuarioIniciales() }}
+                </div>
+                <div class="user-info">
+                  <span class="user-name">{{ usuarioNombre }}</span>
+                  <span class="user-email">{{ usuarioEmail }}</span>
+                </div>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fas fa-user me-2"></i>
+                    Mi Perfil
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fas fa-cog me-2"></i>
+                    Configuración
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>
+                    Cerrar Sesión
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <ng-template #noAuth>
+            <div class="auth-buttons">
+              <a class="btn btn-login" routerLink="/login">
+                <i class="fas fa-sign-in-alt me-2"></i>
+                Iniciar Sesión
+              </a>
+              <a class="btn btn-register" routerLink="/register">
+                <i class="fas fa-user-plus me-2"></i>
+                Registrarse
+              </a>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner de paleta de colores -->
+  <div class="color-palette-banner">
+    <div class="container-fluid">
+      <div class="palette-content">
+        <div class="palette-info">
+          <i class="fas fa-palette"></i>
+          <span>Paleta Gustavo Leonardo:</span>
+        </div>
+        <div class="palette-colors">
+          <div class="palette-color" style="background-color: #CCFF99;">
+            <span>#CCFF99</span>
+          </div>
+          <div class="palette-color" style="background-color: #66CC33;">
+            <span>#66CC33</span>
+          </div>
+          <div class="palette-color" style="background-color: #336600;">
+            <span>#336600</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

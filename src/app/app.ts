@@ -1,11 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  standalone: false,
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss'],
+  standalone: false
 })
-export class App {
-  protected readonly title = signal('curso-virtual-modulos');
+export class AppComponent {
+  title = 'curso-virtual-modulos';
 }

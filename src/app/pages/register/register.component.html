@@ -1,0 +1,228 @@
+<div class="register-container">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-10 col-lg-8 col-xl-6">
+      <!-- Card de registro -->
+      <div class="card register-card shadow-lg">
+        <div class="card-header register-header">
+          <div class="register-logo">
+            <i class="fas fa-user-plus"></i>
+            <h2>Crear Cuenta</h2>
+          </div>
+          <p class="register-subtitle">Regístrate para comenzar a gestionar módulos</p>
+        </div>
+
+        <div class="card-body">
+          <!-- Mensaje de error -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+          </div>
+
+          <!-- Formulario -->
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row">
+              <!-- Nombre completo -->
+              <div class="col-md-12 mb-4">
+                <label for="nombre" class="form-label">
+                  <i class="fas fa-user me-2"></i>Nombre Completo
+                </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  formControlName="nombre"
+                  class="form-control form-control-lg"
+                  [class.is-invalid]="f['nombre'].invalid && f['nombre'].touched"
+                  placeholder="Tu nombre completo"
+                  autocomplete="name"
+                >
+                <div *ngIf="f['nombre'].invalid && f['nombre'].touched" class="invalid-feedback">
+                  <span *ngIf="f['nombre'].errors?.['required']">
+                    El nombre es requerido
+                  </span>
+                  <span *ngIf="f['nombre'].errors?.['minlength']">
+                    Mínimo 3 caracteres
+                  </span>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-12 mb-4">
+                <label for="email" class="form-label">
+                  <i class="fas fa-envelope me-2"></i>Correo Electrónico
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="form-control form-control-lg"
+                  [class.is-invalid]="f['email'].invalid && f['email'].touched"
+                  placeholder="tucorreo@ejemplo.com"
+                  autocomplete="email"
+                >
+                <div *ngIf="f['email'].invalid && f['email'].touched" class="invalid-feedback">
+                  <span *ngIf="f['email'].errors?.['required']">
+                    El correo electrónico es requerido
+                  </span>
+                  <span *ngIf="f['email'].errors?.['email']">
+                    Ingresa un correo electrónico válido
+                  </span>
+                </div>
+              </div>
+
+              <!-- Contraseña -->
+              <div class="col-md-6 mb-4">
+                <label for="password" class="form-label">
+                  <i class="fas fa-lock me-2"></i>Contraseña
+                </label>
+                <div class="input-group">
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    id="password"
+                    formControlName="password"
+                    class="form-control form-control-lg"
+                    [class.is-invalid]="f['password'].invalid && f['password'].touched"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                  >
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility('password')"
+                  >
+                    <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                  </button>
+                </div>
+                <div *ngIf="f['password'].invalid && f['password'].touched" class="invalid-feedback">
+                  <span *ngIf="f['password'].errors?.['required']">
+                    La contraseña es requerida
+                  </span>
+                  <span *ngIf="f['password'].errors?.['minlength']">
+                    Mínimo 6 caracteres
+                  </span>
+                  <span *ngIf="f['password'].errors?.['pattern']">
+                    Debe contener letras y números
+                  </span>
+                </div>
+                <small class="form-text text-muted">
+                  Mínimo 6 caracteres con letras y números
+                </small>
+              </div>
+
+              <!-- Confirmar Contraseña -->
+              <div class="col-md-6 mb-4">
+                <label for="confirmPassword" class="form-label">
+                  <i class="fas fa-lock me-2"></i>Confirmar Contraseña
+                </label>
+                <div class="input-group">
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    class="form-control form-control-lg"
+                    [class.is-invalid]="(f['confirmPassword'].invalid && f['confirmPassword'].touched) || registerForm.errors?.['passwordMismatch']"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                  >
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility('confirmPassword')"
+                  >
+                    <i class="fas" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
+                  </button>
+                </div>
+                <div *ngIf="f['confirmPassword'].invalid && f['confirmPassword'].touched" class="invalid-feedback">
+                  <span *ngIf="f['confirmPassword'].errors?.['required']">
+                    Confirma tu contraseña
+                  </span>
+                </div>
+                <div *ngIf="registerForm.errors?.['passwordMismatch'] && f['confirmPassword'].touched" class="invalid-feedback d-block">
+                  Las contraseñas no coinciden
+                </div>
+              </div>
+
+              <!-- Términos y condiciones -->
+              <div class="col-md-12 mb-4">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    id="aceptarTerminos"
+                    formControlName="aceptarTerminos"
+                    class="form-check-input"
+                    [class.is-invalid]="f['aceptarTerminos'].invalid && f['aceptarTerminos'].touched"
+                  >
+                  <label class="form-check-label" for="aceptarTerminos">
+                    Acepto los
+                    <a href="#" class="text-decoration-none">términos y condiciones</a>
+                    y la
+                    <a href="#" class="text-decoration-none">política de privacidad</a>
+                  </label>
+                  <div *ngIf="f['aceptarTerminos'].invalid && f['aceptarTerminos'].touched" class="invalid-feedback">
+                    Debes aceptar los términos y condiciones
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón de submit -->
+            <div class="d-grid mb-4">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                [disabled]="registerForm.invalid || loading"
+              >
+                <span *ngIf="!loading; else loadingSpinner">
+                  <i class="fas fa-user-plus me-2"></i>Crear Cuenta
+                </span>
+                <ng-template #loadingSpinner>
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Creando cuenta...
+                </ng-template>
+              </button>
+            </div>
+
+            <!-- Separador -->
+            <div class="separator mb-4">
+              <span class="separator-text">o regístrate con</span>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <button type="button" class="btn btn-outline-secondary w-100">
+                  <i class="fab fa-google me-2"></i>Google
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-outline-secondary w-100">
+                  <i class="fab fa-github me-2"></i>GitHub
+                </button>
+              </div>
+            </div>
+
+            <!-- Enlace a login -->
+            <div class="text-center">
+              <p class="mb-0">
+                ¿Ya tienes una cuenta?
+                <a class="text-decoration-none fw-bold" (click)="navigateToLogin()">
+                  Inicia sesión aquí
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Información de paleta -->
+        <div class="card-footer text-center bg-light">
+          <small class="text-muted">
+            Paleta Gustavo Leonardo:
+            <span class="color-dot" style="background-color: #CCFF99;"></span>
+            <span class="color-dot" style="background-color: #66CC33;"></span>
+            <span class="color-dot" style="background-color: #336600;"></span>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

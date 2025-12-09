@@ -1,0 +1,159 @@
+<div class="login-container">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-8 col-lg-6 col-xl-5">
+      <!-- Card de login -->
+      <div class="card login-card shadow-lg">
+        <div class="card-header login-header">
+          <div class="login-logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h2>Iniciar Sesión</h2>
+          </div>
+          <p class="login-subtitle">Accede a tu cuenta para gestionar módulos</p>
+        </div>
+
+        <div class="card-body">
+          <!-- Mensaje de error -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+          </div>
+
+          <!-- Formulario -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="email" class="form-label">
+                <i class="fas fa-envelope me-2"></i>Correo Electrónico
+              </label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control form-control-lg"
+                [class.is-invalid]="f['email'].invalid && f['email'].touched"
+                placeholder="tucorreo@ejemplo.com"
+                autocomplete="email"
+              >
+              <div *ngIf="f['email'].invalid && f['email'].touched" class="invalid-feedback">
+                <span *ngIf="f['email'].errors?.['required']">
+                  El correo electrónico es requerido
+                </span>
+                <span *ngIf="f['email'].errors?.['email']">
+                  Ingresa un correo electrónico válido
+                </span>
+              </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-4">
+              <label for="password" class="form-label">
+                <i class="fas fa-lock me-2"></i>Contraseña
+              </label>
+              <div class="input-group">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  formControlName="password"
+                  class="form-control form-control-lg"
+                  [class.is-invalid]="f['password'].invalid && f['password'].touched"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                >
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                >
+                  <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                </button>
+              </div>
+              <div *ngIf="f['password'].invalid && f['password'].touched" class="invalid-feedback">
+                <span *ngIf="f['password'].errors?.['required']">
+                  La contraseña es requerida
+                </span>
+                <span *ngIf="f['password'].errors?.['minlength']">
+                  Mínimo 6 caracteres
+                </span>
+              </div>
+            </div>
+
+            <!-- Recordarme y olvidé contraseña -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  formControlName="rememberMe"
+                  class="form-check-input"
+                >
+                <label class="form-check-label" for="rememberMe">
+                  Recordar sesión
+                </label>
+              </div>
+              <a href="#" class="text-decoration-none" (click)="navigateToForgotPassword()">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+
+            <!-- Botón de submit -->
+            <div class="d-grid mb-4">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                [disabled]="loginForm.invalid || loading"
+              >
+                <span *ngIf="!loading; else loadingSpinner">
+                  <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                </span>
+                <ng-template #loadingSpinner>
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Iniciando sesión...
+                </ng-template>
+              </button>
+            </div>
+
+            <!-- Separador -->
+            <div class="separator mb-4">
+              <span class="separator-text">o</span>
+            </div>
+
+            <!-- Redes sociales (opcional) -->
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <button type="button" class="btn btn-outline-secondary w-100">
+                  <i class="fab fa-google me-2"></i>Google
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-outline-secondary w-100">
+                  <i class="fab fa-github me-2"></i>GitHub
+                </button>
+              </div>
+            </div>
+
+            <!-- Enlace a registro -->
+            <div class="text-center">
+              <p class="mb-0">
+                ¿No tienes una cuenta?
+                <a class="text-decoration-none fw-bold" (click)="navigateToRegister()">
+                  Regístrate aquí
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Información de paleta -->
+        <div class="card-footer text-center bg-light">
+          <small class="text-muted">
+            Paleta de colores:
+            <span class="color-dot" style="background-color: #CCFF99;"></span>
+            <span class="color-dot" style="background-color: #66CC33;"></span>
+            <span class="color-dot" style="background-color: #336600;"></span>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

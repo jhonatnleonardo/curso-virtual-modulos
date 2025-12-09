@@ -1,0 +1,166 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="hero-content">
+            <h1 class="hero-title">
+              Sistema de Gestión de
+              <span class="highlight">Módulos Educativos</span>
+            </h1>
+            <p class="hero-description">
+              Plataforma diseñada para administrar módulos de cursos virtuales
+              de manera eficiente y organizada. Ideal para instituciones educativas
+              y capacitaciones en línea.
+            </p>
+            <div class="hero-actions">
+              <a *ngIf="!isAuthenticated" routerLink="/register" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-rocket me-2"></i>Comenzar Ahora
+              </a>
+              <a routerLink="/modulos" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-book me-2"></i>Explorar Módulos
+              </a>
+            </div>
+            <div class="hero-stats mt-4">
+              <div class="stat-item">
+                <span class="stat-number">{{ totalModulos }}</span>
+                <span class="stat-label">Módulos</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Gratuito</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Disponible</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-image">
+            <div class="image-container">
+              <i class="fas fa-laptop-code"></i>
+              <div class="color-palette-showcase">
+                <div class="palette-circle" style="background-color: #CCFF99;"></div>
+                <div class="palette-circle" style="background-color: #66CC33;"></div>
+                <div class="palette-circle" style="background-color: #336600;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Características Principales</h2>
+        <p>Todo lo que necesitas para gestionar módulos educativos</p>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-sm-6" *ngFor="let feature of features">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i [class]="feature.icon"></i>
+            </div>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-description">{{ feature.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Módulos Recientes -->
+  <section class="modules-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Módulos Destacados</h2>
+        <p>Explora nuestros módulos más populares</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4" *ngFor="let modulo of modulosRecientes">
+          <div class="module-card">
+            <div class="module-header">
+              <h3 class="module-title">{{ modulo.nombre }}</h3>
+              <span class="module-badge" [class]="getBadgeClass(modulo.nivel)">
+                {{ modulo.nivel }}
+              </span>
+            </div>
+            <p class="module-description">{{ modulo.descripcion }}</p>
+            <div class="module-footer">
+              <span class="module-hours">
+                <i class="fas fa-clock me-1"></i>
+                {{ modulo.horas }} horas
+              </span>
+              <a href="#" class="btn btn-sm btn-outline-primary">Ver Detalles</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a routerLink="/modulos" class="btn btn-primary btn-lg">
+          <i class="fas fa-book-open me-2"></i>Ver Todos los Módulos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tecnologías -->
+  <section class="tech-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Tecnologías Utilizadas</h2>
+        <p>Desarrollado con las mejores herramientas modernas</p>
+      </div>
+      <div class="row tech-icons">
+        <div class="col">
+          <div class="tech-item">
+            <i class="fab fa-angular"></i>
+            <span>Angular 19</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="tech-item">
+            <i class="fas fa-fire"></i>
+            <span>Firebase</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="tech-item">
+            <i class="fab fa-bootstrap"></i>
+            <span>Bootstrap 5</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="tech-item">
+            <i class="fab fa-sass"></i>
+            <span>Sass/SCSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Listo para comenzar?</h2>
+        <p>Crea tu cuenta y comienza a gestionar módulos educativos hoy mismo</p>
+        <div class="cta-buttons">
+          <a *ngIf="!isAuthenticated" routerLink="/register" class="btn btn-light btn-lg me-3">
+            <i class="fas fa-user-plus me-2"></i>Registrarse Gratis
+          </a>
+          <a routerLink="/modulos" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-play-circle me-2"></i>Ver Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

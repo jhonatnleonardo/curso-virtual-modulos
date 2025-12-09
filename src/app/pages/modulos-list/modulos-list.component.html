@@ -1,0 +1,259 @@
+<div class="modulos-list-container">
+  <div class="container">
+    <!-- Header -->
+    <div class="list-header mb-5">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="list-title">
+            <i class="fas fa-book me-3"></i>
+            Módulos del Curso
+          </h1>
+          <p class="list-subtitle">
+            Gestiona todos los módulos educativos del sistema
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <button *ngIf="isAuthenticated"
+                  class="btn btn-primary btn-lg"
+                  routerLink="/modulos/nuevo">
+            <i class="fas fa-plus-circle me-2"></i>
+            Nuevo Módulo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros y búsqueda -->
+    <div class="filters-section mb-4">
+      <div class="row g-3">
+        <!-- Barra de búsqueda -->
+        <div class="col-md-8">
+          <div class="input-group search-box">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              placeholder="Buscar módulos por nombre, descripción o instructor..."
+              [value]="searchTerm"
+              (input)="searchTerm = $any($event.target).value; buscarModulos()"
+            >
+            <button *ngIf="searchTerm"
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="limpiarBusqueda()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtro dropdown -->
+        <div class="col-md-4">
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-lg w-100 dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown">
+              <i class="fas fa-filter me-2"></i>
+              {{ currentFilterLabel }}
+            </button>
+            <ul class="dropdown-menu w-100">
+              <li *ngFor="let filter of filters">
+                <a class="dropdown-item"
+                   [class.active]="currentFilter === filter.value"
+                   (click)="cambiarFiltro(filter.value)">
+                  <i [class]="filter.icon + ' me-2'"></i>
+                  {{ filter.label }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="stats-section mb-4">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon total">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ totalModulos }}</h3>
+              <p>Total Módulos</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon active">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ modulosActivos }}</h3>
+              <p>Activos</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon hours">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ totalHoras }}</h3>
+              <p>Horas Totales</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon instructors">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="stat-info">
+              <h3>{{ totalInstructores }}</h3>
+              <p>Instructores</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3">Cargando módulos...</p>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="errorMessage && !loading" class="alert alert-warning">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {{ errorMessage }}
+      <button class="btn btn-sm btn-outline-warning ms-3" (click)="cargarModulos()">
+        Reintentar
+      </button>
+    </div>
+
+    <!-- Lista de módulos -->
+    <div *ngIf="!loading && filteredModulos.length > 0" class="modules-grid">
+      <div class="row g-4">
+        <div class="col-lg-6" *ngFor="let modulo of filteredModulos">
+          <div class="module-card">
+            <div class="module-header">
+              <div class="module-title-section">
+                <h3 class="module-title">{{ modulo.nombre }}</h3>
+                <div class="module-badges">
+                  <span class="badge" [ngClass]="getBadgeClass(modulo.estado)">
+                    {{ modulo.estado === 'activo' ? 'Activo' : 'Inactivo' }}
+                  </span>
+                  <span class="badge" [ngClass]="getNivelClass(modulo.nivelDificultad)">
+                    <i [class]="getNivelIcon(modulo.nivelDificultad) + ' me-1'"></i>
+                    {{ modulo.nivelDificultad }}
+                  </span>
+                </div>
+              </div>
+              <div class="module-hours">
+                <i class="fas fa-clock"></i>
+                <span>{{ modulo.duracionHoras }}h</span>
+              </div>
+            </div>
+
+            <div class="module-body">
+              <p class="module-description">{{ modulo.descripcion }}</p>
+
+              <div class="module-content">
+                <h6><i class="fas fa-list-ol me-2"></i>Contenido:</h6>
+                <ul>
+                  <li *ngFor="let item of modulo.contenido; let i = index">
+                    {{ i + 1 }}. {{ item }}
+                  </li>
+                </ul>
+              </div>
+
+              <div class="module-instructor">
+                <i class="fas fa-user-tie me-2"></i>
+                <strong>Instructor:</strong> {{ modulo.instructor }}
+              </div>
+            </div>
+
+            <div class="module-footer">
+              <button class="btn btn-outline-primary btn-sm" (click)="verDetalles(modulo)">
+                <i class="fas fa-eye me-1"></i>Ver
+              </button>
+
+              <div *ngIf="isAuthenticated" class="actions">
+                <button class="btn btn-warning btn-sm" (click)="editarModulo(modulo.id!)">
+                  <i class="fas fa-edit me-1"></i>Editar
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="eliminarModulo(modulo.id!)">
+                  <i class="fas fa-trash me-1"></i>Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin resultados -->
+    <div *ngIf="!loading && filteredModulos.length === 0" class="text-center py-5">
+      <div class="empty-state">
+        <i class="fas fa-book fa-4x text-muted mb-3"></i>
+        <h3>No se encontraron módulos</h3>
+        <p class="text-muted">
+          {{ searchTerm ? 'No hay resultados para tu búsqueda' : 'No hay módulos registrados' }}
+        </p>
+        <button *ngIf="isAuthenticated && !searchTerm"
+                class="btn btn-primary mt-3"
+                routerLink="/modulos/nuevo">
+          <i class="fas fa-plus-circle me-2"></i>Crear Primer Módulo
+        </button>
+        <button *ngIf="searchTerm"
+                class="btn btn-outline-secondary mt-3"
+                (click)="limpiarBusqueda()">
+          <i class="fas fa-times me-2"></i>Limpiar búsqueda
+        </button>
+      </div>
+    </div>
+
+    <!-- Paleta de colores -->
+    <div class="mt-5 text-center">
+      <div class="color-palette-section">
+        <h5 class="mb-3">
+          <i class="fas fa-palette me-2"></i>Paleta de Colores del Proyecto
+        </h5>
+        <div class="color-palette">
+          <div class="color-item">
+            <div class="color-sample" style="background-color: #CCFF99;"></div>
+            <div class="color-info">
+              <strong>Primario</strong>
+              <span>#CCFF99</span>
+            </div>
+          </div>
+          <div class="color-item">
+            <div class="color-sample" style="background-color: #66CC33;"></div>
+            <div class="color-info">
+              <strong>Secundario</strong>
+              <span>#66CC33</span>
+            </div>
+          </div>
+          <div class="color-item">
+            <div class="color-sample" style="background-color: #336600;"></div>
+            <div class="color-info">
+              <strong>Terciario</strong>
+              <span>#336600</span>
+            </div>
+          </div>
+        </div>
+        <small class="text-muted">
+          Proyecto de: <strong>Gustavo Leonardo</strong> | Temática: <strong>Curso Virtual - Módulo</strong>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

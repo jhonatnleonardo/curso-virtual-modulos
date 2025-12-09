@@ -1,0 +1,105 @@
+<footer class="app-footer">
+  <div class="footer-content">
+    <div class="container">
+      <div class="row">
+        <!-- Logo y descripción -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <i class="fas fa-graduation-cap"></i>
+              <span>CursoVirtual</span>
+            </div>
+            <p class="footer-description">
+              Sistema de gestión de módulos educativos desarrollado como proyecto académico
+              utilizando Angular 19 y Firebase.
+            </p>
+            <div class="color-palette">
+              <div class="palette-item" *ngFor="let color of contactInfo.paleta; let i = index"
+                   [style.background-color]="color">
+                <span>{{ color }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enlaces rápidos -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h4 class="footer-title">Navegación</h4>
+          <ul class="footer-links">
+            <li *ngFor="let link of footerLinks.navegacion">
+              <a [routerLink]="link.path">
+                <i class="fas fa-chevron-right"></i>
+                {{ link.label }}
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Cuenta -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h4 class="footer-title">Cuenta</h4>
+          <ul class="footer-links">
+            <li *ngFor="let link of footerLinks.cuenta">
+              <a [routerLink]="link.path">
+                <i class="fas fa-chevron-right"></i>
+                {{ link.label }}
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tecnologías -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <h4 class="footer-title">Tecnologías</h4>
+          <div class="tech-badges">
+            <span class="tech-badge" *ngFor="let tech of tecnologias">
+              <i [class]="tech.icon"></i>
+              {{ tech.name }}
+            </span>
+          </div>
+
+          <!-- Información del proyecto -->
+          <div class="project-info mt-4">
+            <h5>Información del Proyecto</h5>
+            <div class="info-item">
+              <i class="fas fa-user-graduate"></i>
+              <span><strong>Estudiante:</strong> {{ contactInfo.estudiante }}</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-book"></i>
+              <span><strong>Temática:</strong> {{ contactInfo.tematica }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Línea divisoria -->
+      <div class="footer-divider"></div>
+
+      <!-- Copyright y redes -->
+      <div class="footer-bottom">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="copyright">
+              &copy; {{ currentYear }} CursoVirtual - Sistema de Gestión de Módulos.
+              <span class="d-block d-md-inline">Proyecto académico.</span>
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <div class="social-links">
+              <a href="#" class="social-link" title="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="#" class="social-link" title="Documentación">
+                <i class="fas fa-book"></i>
+              </a>
+              <a href="#" class="social-link" title="Contacto">
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

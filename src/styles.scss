@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+/* Importar variables */
+@import 'assets/scss/variables';
+@import 'assets/scss/mixins';
+
+/* Estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-base;
+  background-color: $color-fondo;
+  color: $color-texto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utilidades personalizadas */
+.text-primary-custom { color: $color-primario !important; }
+.text-secondary-custom { color: $color-secundario !important; }
+.text-tertiary-custom { color: $color-terciario !important; }
+
+.bg-primary-custom { background-color: $color-primario !important; }
+.bg-secondary-custom { background-color: $color-secundario !important; }
+.bg-tertiary-custom { background-color: $color-terciario !important; }
+
+/* Botones personalizados */
+.btn-primary-custom {
+  @include button-custom($color-secundario, white);
+}
+
+.btn-secondary-custom {
+  @include button-custom($color-primario, $color-texto);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+}
